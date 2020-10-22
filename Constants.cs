@@ -7,9 +7,4 @@ namespace SortableChallenge
         public const string INPUT_PATH = "input.json";
         public const string OUTPUT_PATH = "output.json";
     }
-    public enum AdjustmentFactor
-    {
-        POSITIVE,
-        NEGATIVE
-    }
 }

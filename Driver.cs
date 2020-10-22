@@ -7,6 +7,7 @@ namespace SortableChallenge
         static void Main(string[] args)
         {
             ProcessAudition processAudition = new ProcessAudition();
+            processAudition.PorcessBids();
         }
     }
 }

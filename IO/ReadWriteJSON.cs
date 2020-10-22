@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.IO;
 using System.Collections.Generic;
+using System;
 
 namespace SortableChallenge
 {
@@ -8,9 +9,9 @@ namespace SortableChallenge
     {
         private JsonSerializerOptions IgnoreCaseWhileParsing = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-        public bool WriteJSON()
+        public bool PrintResult(string jsonOutput)
         {
-            //Todo: Implement
+            Console.WriteLine(jsonOutput);
             return true;
         }
 

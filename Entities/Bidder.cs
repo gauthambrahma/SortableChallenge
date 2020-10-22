@@ -4,6 +4,5 @@ namespace SortableChallenge
     {
         public string Name { get; set; }
         public float Adjustment { get; set; }
-        public AdjustmentFactor AdjustmentFactor { get; set;}
     }
 }

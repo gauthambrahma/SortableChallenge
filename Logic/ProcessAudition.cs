@@ -1,4 +1,7 @@
 using System.Linq;
+using System.Text.Json;
+using System.Collections.Generic;
+using System.Xml;
 
 namespace SortableChallenge
 {
@@ -6,9 +9,10 @@ namespace SortableChallenge
     {
         private readonly ReadWriteJSON ReadWriteJSON = new ReadWriteJSON();
         private readonly BidConfiguration Configuration;
-        private readonly SiteBidEntry[] SiteBids;
+        private readonly AuctionEntry[] Auctions;
         private readonly Calculations Calculations = new Calculations();
         private readonly Validations Validations = new Validations();
+        List<HighestAuctionerForUnit[]> FinalResult = new List<HighestAuctionerForUnit[]>();
 
         public ProcessAudition() : this(Constants.CONFIG_PATH, Constants.INPUT_PATH)
         {
@@ -18,27 +22,37 @@ namespace SortableChallenge
         public ProcessAudition(string configPath, string inputPath)
         {
             Configuration = ReadWriteJSON.ReadAndParseJSON<BidConfiguration>(configPath);
-            foreach (var item in Configuration.Bidders)
-            {
-                item.AdjustmentFactor = item.Adjustment < 0 ? AdjustmentFactor.NEGATIVE : AdjustmentFactor.POSITIVE;
-            }
-            SiteBids = ReadWriteJSON.ReadAndParseJSONList<SiteBidEntry>(inputPath).ToArray();
+            Auctions = ReadWriteJSON.ReadAndParseJSONList<AuctionEntry>(inputPath).ToArray();
         }
 
         public void PorcessBids()
         {
-            foreach (SiteBidEntry sitebid in SiteBids)
+            foreach (AuctionEntry auction in Auctions)
             {
+                if (!Validations.IsSiteValid(auction) || auction.Bids.Length == 0)
+                {
+                    //add empty result for this auction and move to next
+                    FinalResult.Add(new HighestAuctionerForUnit[] { });
+                    continue;
+                }
                 //retrive floor value for from config for current bid
-                int floorValue = Configuration.Sites.Where(cs => cs.Name == sitebid.Site).Select(cs => cs.Floor).First();
+                int floorValue = Configuration.Sites.First(cs => cs.Name == auction.Site).Floor;
+                //adjust bids by adjustment factor
+                auction.Bids = Calculations.CalculateAdjustBidValue(auction.Bids, Configuration.Bidders);
                 //remove bids lower than floor value
-                sitebid.Bids = Validations.FilterBidsUnderFloor(sitebid.Bids, floorValue);
+                auction.Bids = Validations.FilterBidsUnderFloor(auction.Bids, floorValue);
                 //retrive permitted bids for current bid
-                string[] permittedBids = Configuration.Sites.Where(cs => cs.Name == sitebid.Site).Select(cs => cs.Bidders).First();
+                string[] permittedBids = Configuration.Sites.First(cs => cs.Name == auction.Site).Bidders;
                 //remove bids from bidders not on permmited bidders list
-                sitebid.Bids = Validations.FilterBidsNotPermitted(sitebid.Bids, permittedBids);
-		
+                auction.Bids = Validations.FilterBidsNotPermitted(auction.Bids, permittedBids);
+                //remove ad units that are not permitted
+                auction.Bids = Validations.FilterBidsAdUnitsNotPermitted(auction.Bids, auction.Units);
+                //calculate the highest bidder
+                FinalResult.Add(Calculations.CalculateHighestBidder(auction));
             }
+            JsonSerializerOptions formatJSONString = new JsonSerializerOptions();
+            formatJSONString.WriteIndented = true;
+            ReadWriteJSON.PrintResult(JsonSerializer.Serialize<List<HighestAuctionerForUnit[]>>(FinalResult, formatJSONString));
         }
     }
 }

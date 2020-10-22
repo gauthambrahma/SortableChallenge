@@ -1,9 +1,9 @@
 namespace  SortableChallenge
 {
-   public class SiteBidEntry 
+   public class AuctionEntry 
    {
        public string Site {get; set;}
        public string[] Units {get; set;}
-       public BidderBidEntry[] Bids {get; set;}
+       public BidEntry[] Bids {get; set;}
    } 
 }
