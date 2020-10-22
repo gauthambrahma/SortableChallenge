@@ -15,13 +15,13 @@ namespace SortableChallenge
             return true;
         }
 
-        public BidConfiguration ReadAndParseJSON<T>(string path)
+        public T ReadAndParseJSON<T>(string path)
         {
             using (StreamReader r = new StreamReader(path))
             {
                 string jsonInput = r.ReadToEnd();
 
-                return JsonSerializer.Deserialize<BidConfiguration>(jsonInput, IgnoreCaseWhileParsing);
+                return JsonSerializer.Deserialize<T>(jsonInput, IgnoreCaseWhileParsing);
             }
 
         }
