@@ -33,6 +33,11 @@ namespace SortableChallenge
                 int floorValue = Configuration.Sites.Where(cs => cs.Name == sitebid.Site).Select(cs => cs.Floor).First();
                 //remove bids lower than floor value
                 sitebid.Bids = Validations.FilterBidsUnderFloor(sitebid.Bids, floorValue);
+                //retrive permitted bids for current bid
+                string[] permittedBids = Configuration.Sites.Where(cs => cs.Name == sitebid.Site).Select(cs => cs.Bidders).First();
+                //remove bids from bidders not on permmited bidders list
+                sitebid.Bids = Validations.FilterBidsNotPermitted(sitebid.Bids, permittedBids);
+		
             }
         }
     }
