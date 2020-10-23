@@ -22,7 +22,7 @@ namespace SortableChallenge
         public ProcessAudition(string configPath, string inputPath)
         {
             Configuration = ReadWriteJSON.ReadAndParseJSON<BidConfiguration>(configPath);
-            Auctions = ReadWriteJSON.ReadAndParseJSONList<AuctionEntry>(inputPath).ToArray();
+            Auctions = ReadWriteJSON.ReadAndParseJSONList<AuctionEntry>().ToArray();
         }
 
         public void PorcessBids()
