@@ -24,6 +24,11 @@
     "site": "houseofspagetti.com",
     "units": [ "banner", "sidebar" ],
     "bids": [
+      {
+        "bidder": "IDKWHOIAM",
+        "unit": "sidebar",
+        "bid": 55
+      }
     ]
   }
 ]

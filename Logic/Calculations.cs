@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections;
 using System.Linq;
 namespace SortableChallenge
 {
@@ -36,7 +36,7 @@ namespace SortableChallenge
                     Result[indexOfChange] = new HighestAuctionerForUnit(bid.Bidder, bid.Unit, bid.Bid);
                 }
             }
-            return Result;
+            return Result.ToList().Where(x=>x.Bid>0).ToArray();
         }
 
     }
