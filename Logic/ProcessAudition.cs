@@ -35,20 +35,24 @@ namespace SortableChallenge
                     FinalResult.Add(new HighestAuctionerForUnit[] { });
                     continue;
                 }
+
+                //get permitted bids for current bid
+                string[] biddersAllowedOnSite = Configuration.Sites.First(cs => cs.Name == auction.Site).Bidders;
+                string[] knownBidders = Configuration.Bidders.Select(bi => bi.Name).ToArray();
+                //remove bids from bidders not on permmited bidders list or unknown
+                auction.Bids = Validations.FilterBidsNotPermitted(auction.Bids, biddersAllowedOnSite);
+                auction.Bids = Validations.FilterBidsNotPermitted(auction.Bids, knownBidders);
+
+                //remove ad units that are not permitted
+                auction.Bids = Validations.FilterBidsAdUnitsNotPermitted(auction.Bids, auction.Units);
+
                 //retrive floor value for from config for current bid
                 int floorValue = Configuration.Sites.First(cs => cs.Name == auction.Site).Floor;
                 //adjust bids by adjustment factor
                 auction.Bids = Calculations.CalculateAdjustBidValue(auction.Bids, Configuration.Bidders);
                 //remove bids lower than floor value
                 auction.Bids = Validations.FilterBidsUnderFloor(auction.Bids, floorValue);
-                //get permitted bids for current bid
-                string[] biddersAllowedOnSite = Configuration.Sites.First(cs => cs.Name == auction.Site).Bidders;
-                string[] knownBidders = Configuration.Bidders.Select(bi => bi.Name).ToArray();
-                string[] permittedBids = biddersAllowedOnSite.ToList().Concat(knownBidders.ToList()).Distinct().ToArray();
-                //remove bids from bidders not on permmited bidders list
-                auction.Bids = Validations.FilterBidsNotPermitted(auction.Bids, permittedBids);
-                //remove ad units that are not permitted
-                auction.Bids = Validations.FilterBidsAdUnitsNotPermitted(auction.Bids, auction.Units);
+
                 //calculate the highest bidder
                 FinalResult.Add(Calculations.CalculateHighestBidder(auction));
             }

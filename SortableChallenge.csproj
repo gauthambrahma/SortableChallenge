@@ -18,9 +18,37 @@
     <None Update="CustomInputs\MultipleCompanies\input.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="CustomInputs\EmptyBids\config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="CustomInputs\EmptyBids\input.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="CustomInputs\BidderNotPermitted\config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="CustomInputs\BidderNotPermitted\input.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="CustomInputs\BidderNotRecognized\config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="CustomInputs\BidderNotRecognized\input.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="CustomInputs\AdUnitNotInvolved\config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="CustomInputs\AdUnitNotInvolved\input.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CustomInputs\" />
     <Folder Include="CustomInputs\MultipleCompanies\" />
+    <Folder Include="CustomInputs\EmptyBids\" />
+    <Folder Include="CustomInputs\BidderNotPermitted\" />
+    <Folder Include="CustomInputs\BidderNotRecognized\" />
+    <Folder Include="CustomInputs\AdUnitNotInvolved\" />
   </ItemGroup>
 </Project>
