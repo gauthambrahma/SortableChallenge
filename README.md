@@ -54,7 +54,7 @@ $ docker run -i -v /<absolute-path-to-sortable-project>/CustomInputs/AdUnitNotIn
 ```
 	
 
-####Notes:
+#### Notes:
 
 1. borrowed gitignore file from --> https://github.com/github/gitignore/blob/master/VisualStudio.gitignore 
 2. Wonder what happens when two bidders bid for the same unit on a site for same price.(..and have same adjustment factor too). 🤔 Tie-breaking stratergies?
